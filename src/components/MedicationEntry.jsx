@@ -16,7 +16,8 @@ export default function MedicationEntry({ onSave, medList }) {
       <h3>Medication Entry</h3>
       <DataInputOptionalDropdown name={name} setName={setName} options={medList} />
 			<input value={dosage} onChange={(e) => setDosage(e.target.value)} placeholder="Dosage" />
-      <button onClick={handleSubmit}>Save</button>
+      <input type="datetime-local" value={time} onChange={(e) => setTime(e.target.value)} />
+			<button onClick={handleSubmit}>Save</button>
     </div>
   );
 }

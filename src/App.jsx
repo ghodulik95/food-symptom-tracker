@@ -73,6 +73,10 @@ function App() {
     if (data.apiKey) setApiKey(data.apiKey);
   };
 	
+	const handleDelete = (entryToDelete) => {
+    setEntries(entries.filter((e) => e.id !== entryToDelete.id));
+  };
+	
 	const medList = Array.from(
     new Set(
       entries
@@ -134,7 +138,7 @@ function App() {
 
       <CurrentSymptoms entries={entries} onUpdate={updateEntry} />
       <CurrentMedications entries={entries} onUpdate={updateEntry} />
-      <RecentFoods entries={entries} />
+      <RecentFoods entries={entries} onDelete={handleDelete} />
 			
 			{/* ✅ Notes area */}
       <div ref={notesRef} style={{ marginTop: "2rem" }}>

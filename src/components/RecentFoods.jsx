@@ -1,4 +1,4 @@
-export default function RecentFoods({ entries }) {
+export default function RecentFoods({ entries, onDelete }) {
   const cutoff = new Date(Date.now() - 36 * 60 * 60 * 1000);
   const recent = entries.filter(
     (e) => e.type === "food" && new Date(e.time) > cutoff
@@ -28,6 +28,19 @@ export default function RecentFoods({ entries }) {
         return (
           <div key={i} style={{ marginBottom: "1rem" }}>
             <b>{f.text}</b> at {f.time}
+						
+						{/* Delete button */}
+            <button
+              style={{ marginLeft: "0.5rem" }}
+              onClick={() => {
+                if (window.confirm(`Delete "${f.text}" entry?`)) {
+                  onDelete(f); // pass whole entry, or just id if available
+                }
+              }}
+            >
+              ❌ Delete
+            </button>
+						
 						{/* Preparation techniques */}
             {techniques.length > 0 && (
               <div style={{ marginTop: "0.25rem" }}>

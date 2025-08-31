@@ -3,8 +3,8 @@ import React, { useState } from "react";
 export default function SymptomsTable({ entries, onUpdate, onDelete }) {
   const [editId, setEditId] = useState(null);
   const [editValues, setEditValues] = useState({
-    name: "",
-    severity: "",
+    symptom: "",
+    intensity: "",
     start: "",
     end: ""
   });
@@ -12,8 +12,8 @@ export default function SymptomsTable({ entries, onUpdate, onDelete }) {
   const startEdit = (sym) => {
     setEditId(sym.id);
     setEditValues({
-      name: sym.name,
-      severity: sym.severity || "",
+      symptom: sym.symptom,
+      intensity: sym.intensity || "",
       start: sym.start || "",
       end: sym.end || ""
     });
@@ -21,7 +21,7 @@ export default function SymptomsTable({ entries, onUpdate, onDelete }) {
 
   const cancelEdit = () => {
     setEditId(null);
-    setEditValues({ name: "", severity: "", start: "", end: "" });
+    setEditValues({ symptom: "", intensity: "", start: "", end: "" });
   };
 
   const saveEdit = () => {
@@ -36,8 +36,8 @@ export default function SymptomsTable({ entries, onUpdate, onDelete }) {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
-              <th style={{ borderBottom: "1px solid #ccc" }}>Name</th>
-              <th style={{ borderBottom: "1px solid #ccc" }}>Severity</th>
+              <th style={{ borderBottom: "1px solid #ccc" }}>symptom</th>
+              <th style={{ borderBottom: "1px solid #ccc" }}>intensity</th>
               <th style={{ borderBottom: "1px solid #ccc" }}>Start</th>
               <th style={{ borderBottom: "1px solid #ccc" }}>End</th>
               <th style={{ borderBottom: "1px solid #ccc" }}>Actions</th>
@@ -49,21 +49,21 @@ export default function SymptomsTable({ entries, onUpdate, onDelete }) {
                 <td>
                   {editId === sym.id ? (
                     <input
-                      value={editValues.name}
-                      onChange={(e) => setEditValues({ ...editValues, name: e.target.value })}
+                      value={editValues.symptom}
+                      onChange={(e) => setEditValues({ ...editValues, symptom: e.target.value })}
                     />
                   ) : (
-                    sym.name
+                    sym.symptom
                   )}
                 </td>
                 <td>
                   {editId === sym.id ? (
                     <input
-                      value={editValues.severity}
-                      onChange={(e) => setEditValues({ ...editValues, severity: e.target.value })}
+                      value={editValues.intensity}
+                      onChange={(e) => setEditValues({ ...editValues, intensity: e.target.value })}
                     />
                   ) : (
-                    sym.severity || "-"
+                    sym.intensity || "-"
                   )}
                 </td>
                 <td>
@@ -99,7 +99,7 @@ export default function SymptomsTable({ entries, onUpdate, onDelete }) {
                       <button onClick={() => startEdit(sym)}>✏️ Edit</button>
                       <button
                         onClick={() => {
-                          if (window.confirm(`Delete symptom "${sym.name}"?`)) {
+                          if (window.confirm(`Delete symptom "${sym.symptom}"?`)) {
                             onDelete(sym);
                           }
                         }}

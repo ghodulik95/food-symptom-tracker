@@ -4,7 +4,7 @@ import { startSpeechRecognition } from "../services/speech";
 import { localNow } from "../utils/dateutils.js";
 import PopupSelectAndFill from "./PopupSelectAndFill";
 
-export default function FoodEntry({ onSave, apiKey, foodList }) {
+export default function FoodEntry({ onSave, apiKey, foodList, analysisCache }) {
   const [text, setText] = useState("");
   const [time, setTime] = useState(localNow());
   const [analysis, setAnalysis] = useState("");
@@ -21,6 +21,13 @@ export default function FoodEntry({ onSave, apiKey, foodList }) {
     s.fodmapCategory === "High";
 
   const handleVoice = () => startSpeechRecognition(setText);
+	
+	const getAnalysisCheckCache = async (text, apiKey) => {
+		if (text in analysisCache) {
+			return analysisCache[text];
+		}
+		return await analyzeFood(text, apiKey);
+	}
 
   const handleSubmit = async () => {
     if (!apiKey) {
@@ -33,11 +40,13 @@ export default function FoodEntry({ onSave, apiKey, foodList }) {
       onSave({ type: "food", text, time, analysis });
       return;
     }
+		
+		
 
     // Otherwise: run analysis
     setLoading(true);
     try {
-      const result = await analyzeFood(text, apiKey);
+      const result = await getAnalysisCheckCache(text, apiKey);
       setAnalysis(result);
       if (autoAdd) {
         onSave({ type: "food", text, time, analysis: result });

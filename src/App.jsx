@@ -103,6 +103,13 @@ function App() {
     )
   );
 	
+	const analysisDict = entries
+												.filter(e => e.type === "food" && e.text && e.analysis)
+												.reduce((acc, e) => {
+													acc[e.text] = e.analysis;
+													return acc;
+												}, {});
+
 	const medOptionsList = Array.from(
 		new Set(
 			entries
@@ -142,7 +149,7 @@ function App() {
         </label>
       </div>
 
-      <FoodEntry onSave={addEntry} apiKey={apiKey} foodList={foodList} />
+			<FoodEntry onSave={addEntry} apiKey={apiKey} foodList={foodList} analysisCache={analysisDict} />
       <MedicationEntry onSave={addEntry} medList={medList} medOptionsList={medOptionsList} />
       <SymptomEntry onSave={addEntry} symptomList={symptomList} />
 

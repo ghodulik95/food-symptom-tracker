@@ -15,7 +15,7 @@ export default function SymptomEntry({ onSave, symptomList }) {
   return (
     <div className="card">
       <h3>Symptom Entry</h3>
-      <DataInputOptionalDropdown name={symptom} setName={setSymptom} options={symptomList} />
+			<DataInputOptionalDropdown name={symptom} setName={setSymptom} options={symptomList} placeholder={"Symptom description"} />
 			<input type="number" min="0" max="10" value={intensity} onChange={(e) => setIntensity(e.target.value)} />
       <input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} />
       <input type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />

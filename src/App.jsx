@@ -5,6 +5,8 @@ import SymptomEntry from "./components/SymptomEntry";
 import CurrentSymptoms from "./components/CurrentSymptoms";
 import CurrentMedications from "./components/CurrentMedications";
 import RecentFoods from "./components/RecentFoods";
+import MedicationsTable from "./components/MedicationsTable";
+import SymptomsTable from "./components/SymptomsTable";
 import { initDataFile, loadData, saveData, exportData, importData } from "./services/fileSystem";
 
 function App() {
@@ -100,6 +102,14 @@ function App() {
         .map((e) => e.text)
     )
   );
+	
+	const medOptionsList = Array.from(
+		new Set(
+			entries
+				.filter(e => e.type === "medication" && e.name && e.dosage)
+				.map(e => JSON.stringify({ name: e.name, dosage: e.dosage }))
+		)
+	).map(str => JSON.parse(str));
 
   return (
     <div className="App">
@@ -133,12 +143,15 @@ function App() {
       </div>
 
       <FoodEntry onSave={addEntry} apiKey={apiKey} foodList={foodList} />
-      <MedicationEntry onSave={addEntry} medList={medList} />
+      <MedicationEntry onSave={addEntry} medList={medList} medOptionsList={medOptionsList} />
       <SymptomEntry onSave={addEntry} symptomList={symptomList} />
 
       <CurrentSymptoms entries={entries} onUpdate={updateEntry} />
       <CurrentMedications entries={entries} onUpdate={updateEntry} />
       <RecentFoods entries={entries} onDelete={handleDelete} />
+			
+			<MedicationsTable entries={entries} onUpdate={updateEntry} onDelete={handleDelete} />
+			<SymptomsTable entries={entries} onUpdate={updateEntry} onDelete={handleDelete} />
 			
 			{/* ✅ Notes area */}
       <div ref={notesRef} style={{ marginTop: "2rem" }}>

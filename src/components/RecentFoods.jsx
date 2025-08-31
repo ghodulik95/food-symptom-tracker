@@ -2,7 +2,7 @@ export default function RecentFoods({ entries, onDelete }) {
   const cutoff = new Date(Date.now() - 36 * 60 * 60 * 1000);
   const recent = entries.filter(
     (e) => e.type === "food" && new Date(e.time) > cutoff
-  );
+  ).sort((a, b) => new Date(b.time) - new Date(a.time));
 
   const isNotable = (s) => {
 		console.log(s);

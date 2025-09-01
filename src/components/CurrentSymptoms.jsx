@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { toLocalDateTimeString } from "../utils/dateutils";
+import { toLocalDateTimeString, localNow } from "../utils/dateutils";
 
 export default function CurrentSymptoms({ entries, onUpdate }) {
   const ongoing = entries.filter(e => e.type === "symptom" && !e.end);
@@ -42,7 +42,7 @@ export default function CurrentSymptoms({ entries, onUpdate }) {
             <div style={{ marginTop: "0.5rem" }}>
               <button
                 onClick={() => {
-                  const newEnd = new Date().toISOString().slice(0, 16);
+                  const newEnd = localNow();
                   onUpdate({ ...s, end: newEnd });
                 }}
               >

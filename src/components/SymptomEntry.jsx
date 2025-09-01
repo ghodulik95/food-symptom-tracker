@@ -7,6 +7,22 @@ export default function SymptomEntry({ onSave, symptomList }) {
   const [intensity, setIntensity] = useState(0);
   const [start, setStart] = useState(localNow());
   const [end, setEnd] = useState("");
+  const [useManual, setUseManual] = useState(true);
+	
+	const symptomOptions = [
+    "Manual Entry",
+    ...new Set(symptomList),
+  ];
+	
+	const handleDropdownSelect = (value) => {
+    if (value === "Manual Entry") {
+      setUseManual(true);
+      setSymptom("");
+    } else {
+      setUseManual(false);
+			setSymptom(value)
+    }
+  };
 
   const handleSubmit = () => {
     onSave({ type: "symptom", symptom, intensity, start, end: end || null });
@@ -15,6 +31,14 @@ export default function SymptomEntry({ onSave, symptomList }) {
   return (
     <div className="card">
       <h3>Symptom Entry</h3>
+			{/* Dropdown for previous meds */}
+      <select onChange={(e) => handleDropdownSelect(e.target.value)}>
+        {symptomOptions.map((opt, i) => (
+          <option key={i} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
 			<DataInputOptionalDropdown name={symptom} setName={setSymptom} options={symptomList} placeholder={"Symptom description"} />
 			<input type="number" min="0" max="10" value={intensity} onChange={(e) => setIntensity(e.target.value)} />
       <input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} />

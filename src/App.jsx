@@ -90,8 +90,8 @@ function App() {
 	const symptomList = Array.from(
     new Set(
       entries
-        .filter((e) => e.type === "symptom" && e.name) // adjust field name if different
-        .map((e) => e.name.trim())
+        .filter((e) => e.type === "symptom" && e.symptom) // adjust field name if different
+        .map((e) => e.symptom.trim())
     )
   );
 	

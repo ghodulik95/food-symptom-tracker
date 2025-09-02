@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import FoodEntry from "./components/FoodEntry";
 import MedicationEntry from "./components/MedicationEntry";
 import SymptomEntry from "./components/SymptomEntry";
+import OtherEntry from "./components/OtherEntry";
 import CurrentSymptoms from "./components/CurrentSymptoms";
 import CurrentMedications from "./components/CurrentMedications";
 import RecentFoods from "./components/RecentFoods";
 import MedicationsTable from "./components/MedicationsTable";
 import SymptomsTable from "./components/SymptomsTable";
+import OtherTable from "./components/OtherTable";
 import { initDataFile, loadData, saveData, exportData, importData } from "./services/fileSystem";
 
 function App() {
@@ -95,6 +97,14 @@ function App() {
     )
   );
 	
+	const otherList = Array.from(
+    new Set(
+      entries
+        .filter((e) => e.type === "other" && e.name) // adjust field name if different
+        .map((e) => e.name.trim())
+    )
+  );
+	
 	const foodList = Array.from(
     new Set(
       entries
@@ -152,6 +162,7 @@ function App() {
 			<FoodEntry onSave={addEntry} apiKey={apiKey} foodList={foodList} analysisCache={analysisDict} />
       <MedicationEntry onSave={addEntry} medList={medList} medOptionsList={medOptionsList} />
       <SymptomEntry onSave={addEntry} symptomList={symptomList} />
+			<OtherEntry onSave={addEntry} otherList={otherList} />
 
       <CurrentSymptoms entries={entries} onUpdate={updateEntry} />
       <CurrentMedications entries={entries} onUpdate={updateEntry} />
@@ -159,6 +170,7 @@ function App() {
 			
 			<MedicationsTable entries={entries} onUpdate={updateEntry} onDelete={handleDelete} />
 			<SymptomsTable entries={entries} onUpdate={updateEntry} onDelete={handleDelete} />
+			<OtherTable entries={entries} onUpdate={updateEntry} onDelete={handleDelete} />
 			
 			{/* ✅ Notes area */}
       <div ref={notesRef} style={{ marginTop: "2rem" }}>

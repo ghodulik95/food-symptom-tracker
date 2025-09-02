@@ -5,9 +5,8 @@ export default function DataInputOptionalDropdown({ name, setName, options, plac
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder={placeholder}
-        list="medication-options"
       />
-      <datalist id="medication-options">
+      <datalist>
         {options.map((opt, i) => (
           <option key={i} value={opt} />
         ))}

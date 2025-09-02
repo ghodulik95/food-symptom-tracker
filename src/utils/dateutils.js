@@ -32,6 +32,9 @@ export function isToday(dateString) {
 }
 
 export function formatDisplayDate(dateString) {
+	if (!dateString) {
+		return null;
+	}
   const date = new Date(dateString);
   return date.toLocaleString(undefined, {
     month: "long",   // "August"

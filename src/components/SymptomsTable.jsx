@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {formatDisplayDate} from "../utils/dateutils";
+
 
 export default function SymptomsTable({ entries, onUpdate, onDelete }) {
   const [editId, setEditId] = useState(null);
@@ -44,7 +46,9 @@ export default function SymptomsTable({ entries, onUpdate, onDelete }) {
             </tr>
           </thead>
           <tbody>
-            {entries.filter(e => e.type === "symptom").map(sym => (
+            {entries.filter(e => e.type === "symptom")
+						.sort((a, b) => new Date(b.start) - new Date(a.start))
+						.map(sym => (
               <tr key={sym.id}>
                 <td>
                   {editId === sym.id ? (
@@ -74,7 +78,7 @@ export default function SymptomsTable({ entries, onUpdate, onDelete }) {
                       onChange={(e) => setEditValues({ ...editValues, start: e.target.value })}
                     />
                   ) : (
-                    sym.start || "-"
+                    formatDisplayDate(sym.start) || "-"
                   )}
                 </td>
                 <td>
@@ -85,7 +89,7 @@ export default function SymptomsTable({ entries, onUpdate, onDelete }) {
                       onChange={(e) => setEditValues({ ...editValues, end: e.target.value })}
                     />
                   ) : (
-                    sym.end || "-"
+                    formatDisplayDate(sym.end) || "-"
                   )}
                 </td>
                 <td>

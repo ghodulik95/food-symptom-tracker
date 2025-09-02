@@ -10,6 +10,7 @@ export default function FoodEntry({ onSave, apiKey, foodList, analysisCache }) {
   const [analysis, setAnalysis] = useState("");
   const [loading, setLoading] = useState(false);
   const [autoAdd, setAutoAdd] = useState(true); // ✅ checkbox state
+	const [analysisStale, setAnalysisStale] = useState(false);
 
   const isNotable = (s) =>
     s.histamineContentLowMedHigh === "Medium" ||
@@ -34,10 +35,17 @@ export default function FoodEntry({ onSave, apiKey, foodList, analysisCache }) {
       alert("Please set your API key first.");
       return;
     }
+		
+		if (analysisStale) {
+			if(!window.confirm(`Entry "${text}" recently added. Add again?`)) {
+				return;
+			}
+		}
 
     // Case: analysis already done, autoAdd disabled → Save manually
     if (!autoAdd && analysis && !loading) {
       onSave({ type: "food", text, time, analysis });
+			setAnalysisStale(true);
       return;
     }
 		
@@ -48,8 +56,10 @@ export default function FoodEntry({ onSave, apiKey, foodList, analysisCache }) {
     try {
       const result = await getAnalysisCheckCache(text, apiKey);
       setAnalysis(result);
+			setAnalysisStale(false);
       if (autoAdd) {
         onSave({ type: "food", text, time, analysis: result });
+				setAnalysisStale(true);
       }
     } catch (e) {
       alert(e.message);
@@ -57,6 +67,11 @@ export default function FoodEntry({ onSave, apiKey, foodList, analysisCache }) {
       setLoading(false);
     }
   };
+	
+	const onTextChange = (t) => {
+		setText(t);
+		setAnalysisStale(false);
+	}
 
   const notable = analysis?.sensitivities?.filter(isNotable) || [];
 
@@ -66,7 +81,7 @@ export default function FoodEntry({ onSave, apiKey, foodList, analysisCache }) {
 
       <textarea
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => onTextChange(e.target.value)}
         placeholder="Describe your food..."
       />
       <br />
@@ -94,7 +109,7 @@ export default function FoodEntry({ onSave, apiKey, foodList, analysisCache }) {
       <button onClick={handleSubmit} disabled={loading}>
         {loading
           ? "Analyzing..."
-          : !autoAdd && analysis
+          : !analysisStale && !autoAdd && analysis
           ? "Save"
           : "Analyze"}
       </button>

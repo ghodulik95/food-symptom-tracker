@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {formatDisplayDate} from "../utils/dateutils";
+
 
 export default function MedicationsTable({ entries, onUpdate, onDelete }) {
   const [editId, setEditId] = useState(null);
@@ -33,7 +35,9 @@ export default function MedicationsTable({ entries, onUpdate, onDelete }) {
             </tr>
           </thead>
           <tbody>
-            {entries.filter(e => e.type === "medication").map(med => (
+            {entries.filter(e => e.type === "medication")
+							.sort((a, b) => new Date(b.time) - new Date(a.time))
+							.map(med => (
               <tr key={med.id}>
                 <td>
                   {editId === med.id ? (
@@ -63,7 +67,7 @@ export default function MedicationsTable({ entries, onUpdate, onDelete }) {
                       onChange={(e) => setEditValues({ ...editValues, time: e.target.value })}
                     />
                   ) : (
-                    med.time
+									formatDisplayDate(med.time)
                   )}
                 </td>
                 <td>

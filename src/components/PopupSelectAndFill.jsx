@@ -16,19 +16,36 @@ export default function PopupSelectAndFill({ options, onSelect }) {
         <div
           style={{
             position: "fixed",
-            top: 0, left: 0, right: 0, bottom: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             backgroundColor: "rgba(0,0,0,0.4)",
             display: "flex",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
-          <div style={{ background: "white", padding: "1rem", borderRadius: "8px" }}>
+          <div
+            style={{
+              background: "white",
+              padding: "1rem",
+              borderRadius: "8px",
+              maxHeight: "70vh",      // limit height
+              width: "300px",         // optional width
+              overflowY: "auto",      // make content scrollable
+            }}
+          >
             <h3>Select an Option</h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               {options.map((opt, i) => (
                 <li key={i} style={{ margin: "0.5rem 0" }}>
-                  <button onClick={() => handlePick(opt)}>{opt}</button>
+                  <button
+                    style={{ width: "100%" }}
+                    onClick={() => handlePick(opt)}
+                  >
+                    {opt}
+                  </button>
                 </li>
               ))}
             </ul>

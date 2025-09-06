@@ -4,6 +4,8 @@ import { startSpeechRecognition } from "../services/speech";
 import { localNow } from "../utils/dateutils.js";
 import PopupSelectAndFill from "./PopupSelectAndFill";
 
+const DISABLE_ANALYSIS = false;
+
 export default function FoodEntry({ onSave, apiKey, foodList, analysisCache }) {
   const [text, setText] = useState("");
   const [time, setTime] = useState(localNow());
@@ -24,6 +26,9 @@ export default function FoodEntry({ onSave, apiKey, foodList, analysisCache }) {
   const handleVoice = () => startSpeechRecognition(setText);
 	
 	const getAnalysisCheckCache = async (text, apiKey) => {
+		if (DISABLE_ANALYSIS) {
+			return {};
+		}
 		if (text in analysisCache) {
 			return analysisCache[text];
 		}

@@ -44,3 +44,17 @@ export function formatDisplayDate(dateString) {
     hour12: true     // AM/PM
   });
 }
+
+export function hoursAgoLocalString(i) {
+  const date = new Date();
+  date.setHours(date.getHours() - i);
+
+  const pad = (n) => String(n).padStart(2, "0");
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hour = pad(date.getHours());
+  const minute = pad(date.getMinutes());
+
+  return `${year}-${month}-${day}T${hour}:${minute}`;
+}
